@@ -1,112 +1,79 @@
 import React, { Component } from 'react';
-import './Body.css'
+import './Body.css';
+import TaskList from './TaskList';
 
 class Body extends Component {
-    render() {
-        return (
+    constructor(props) {
+        super(props);
+        this.state = {
+            tasks : [],
+            isDisplayForm : false
+        }
+    }
+    componentWillMount() {
+        if(localStorage && localStorage.getItem('tasks')){
+            var tasks = JSON.parse(localStorage.getItem('tasks'));
+                this.setState({
+                    tasks : tasks
+                });
+            };
+    } 
 
+    onGenerateData = () => {
+        var tasks = [
+            {
+                id : 1,
+                name : 'duong anh dung',
+                age : 3,
+                genre : 5,
+
+            },
+            {
+                id : 3,
+                name : 'duong anh dung',
+                age : 3,
+                genre : 5,
+
+            },
+            {
+                id : 2,
+                name : 'duong anh dung',
+                age : 3,
+                genre : 5,
+
+            }
+        ];
+        this.setState({
+            tasks : tasks
+        });
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+        
+    }
+    render() {
+        var { tasks, isDisplayForm } = this.state;
+        var elmTaskForm = isDisplayForm ? <TaskForm/> : '';
+
+        return (
+            
             <div className="container">
+                
+                <button type="button" class="btn btn-info" onClick={}>button</button>
+                
+                {isDisplayForm ? "fucntionToGenerateForm" : ""}
                 <div className="text-center">
                     <h1>List User</h1>
                 </div>
+                <div>
+                    {elmTaskForm}
+                </div>
+                <button type="button" className="btn btn-info" onClick={ this.onGenerateData } style={{"marginBottom" : "15px"}}>
+                <i className="fa fa-plus-circle" style={{"marginRight" : "5px"}} ></i>Generate</button>
 
-                <table class="table table-bordered table-hover">
-                    <thead>
-                        <tr>
-                            <th className="text-center">ID</th>
-                            <th className="text-center">Name</th>
-                            <th className="text-center">Age</th>
-                            <th className="text-center">Genre</th>
-                            <th className="text-center">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td className="text-center">1</td>
-                            <td className="text-center">Duong Anh Dung</td>
-                            <td className="text-center"> 25 </td>
-                            <td className="text-center">Male</td>
-                            <td className="text-center">
-                                <button type="button" className="btn btn-sm btn-warning" style={{ 'marginRight': '20px' }}>
-                                    <span className="fa fa-pencil mr-5"></span> Edit
-                                </button>
-
-                                <button type="button" class="btn btn-sm btn-danger">
-                                    <span className="fa fa-pencil mr-5"></span> Delete
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td className="text-center">2</td>
-                            <td className="text-center">Quach Van Nhan</td>
-                            <td className="text-center"> 30 </td>
-                            <td className="text-center">Male</td>
-                            <td className="text-center">
-                                <button type="button" className="btn btn-sm btn-warning" style={{ 'marginRight': '20px' }}>
-                                    <span className="fa fa-pencil mr-5"></span> Edit
-                                </button>
-
-                                <button type="button" class="btn btn-sm btn-danger">
-                                    <span className="fa fa-pencil mr-5"></span> Delete
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td className="text-center">3</td>
-                            <td className="text-center">Doan Thi Diem</td>
-                            <td className="text-center"> 20 </td>
-                            <td className="text-center">Female</td>
-                            <td className="text-center">
-                                <button type="button" className="btn btn-sm btn-warning" style={{ 'marginRight': '20px' }}>
-                                    <span className="fa fa-pencil mr-5"></span> Edit
-                                </button>
-
-                                <button type="button" class="btn btn-sm btn-danger">
-                                    <span className="fa fa-pencil mr-5"></span> Delete
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td className="text-center">4</td>
-                            <td className="text-center">Le Van Lam</td>
-                            <td className="text-center"> 22 </td>
-                            <td className="text-center">Male</td>
-                            <td className="text-center">
-                                <button type="button" className="btn btn-sm btn-warning" style={{ 'marginRight': '20px' }}>
-                                    <span className="fa fa-pencil mr-5"></span> Edit
-                                </button>
-
-                                <button type="button" class="btn btn-sm btn-danger">
-                                    <span className="fa fa-pencil mr-5"></span> Delete
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td className="text-center">5</td>
-                            <td className="text-center">Le Quynh Trang</td>
-                            <td className="text-center"> 38 </td>
-                            <td className="text-center">Female</td>
-                            <td className="text-center">
-                                <button type="button" className="btn btn-sm btn-warning" style={{ 'marginRight': '20px' }}>
-                                    <span className="fa fa-pencil mr-5"></span> Edit
-                                </button>
-
-                                <button type="button" class="btn btn-sm btn-danger">
-                                    <span className="fa fa-pencil mr-5"></span> Delete
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-
-
-
-
+                < TaskList tasks={ tasks }  />
+                
             </div>
-
-
         );
     }
 }
-
+     
 export default Body;

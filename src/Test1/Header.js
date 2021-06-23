@@ -4,6 +4,10 @@ import React , { Component } from 'react';
 class Header extends Component {
   render (){
     return (
+  
+    <div class="container" >
+      
+    
     
     <nav className="navbar navbar-inverse">
         <ul className="nav navbar-nav">
@@ -15,7 +19,7 @@ class Header extends Component {
             </li>
         </ul>
     </nav>
-    
+    </div>
     );
   }
 }
