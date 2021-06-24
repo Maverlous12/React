@@ -4,12 +4,8 @@ import React , { Component } from 'react';
 class Header extends Component {
   render (){
     return (
-  
     <div class="container" >
-      
-    
-    
-    <nav className="navbar navbar-inverse">
+      <nav className="navbar navbar-inverse">
         <ul className="nav navbar-nav">
             <li>
                 <a>Home</a>
@@ -18,7 +14,7 @@ class Header extends Component {
                 <a>Information</a>
             </li>
         </ul>
-    </nav>
+      </nav>
     </div>
     );
   }
