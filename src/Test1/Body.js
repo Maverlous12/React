@@ -2,13 +2,15 @@ import React, { Component } from 'react';
 import './Body.css';
 import TaskList from './TaskList';
 import TaskForm from './TaskForm';
+import { v4 as uuidv4 } from 'uuid';
 
 class Body extends Component {
     constructor(props) {
         super(props);
         this.state = {
             tasks : [],
-            isDisplayForm : false
+            isDisplayForm : false,
+            taskEditing : null
         }
     }
     componentWillMount() {
@@ -20,36 +22,6 @@ class Body extends Component {
             };
     } 
 
-    onGenerateData = () => {
-        var tasks = [
-            {
-                id : 1,
-                name : 'duong anh dung',
-                age : 3,
-                genre : 5,
-
-            },
-            {
-                id : 3,
-                name : 'duong anh dung',
-                age : 3,
-                genre : 5,
-
-            },
-            {
-                id : 2,
-                name : 'duong anh dung',
-                age : 3,
-                genre : 5,
-
-            }
-        ];
-        this.setState({
-            tasks : tasks
-        });
-        localStorage.setItem('tasks', JSON.stringify(tasks));
-        
-    }
     onToggleForm = () => {
         this.setState({
             isDisplayForm : !this.state.isDisplayForm 
@@ -60,18 +32,73 @@ class Body extends Component {
         this.setState({
             isDisplayForm : false
         });
-
-
     }
 
+    onShowForm = () => {
+        this.setState({
+            isDisplayForm : true
+        });
+    }
 
+    onSubmit = (data) => {
+        var { tasks } = this.state;
+        if(data.id === ''){
+            data.id = uuidv4() ;
+            tasks.push(data);
+        }else{
+            var index = this.findIndex(data.id);
+            tasks[index] = data;
+        }
+            this.setState({
+            tasks : tasks
+        });
+        localStorage.setItem('tasks', JSON.stringify(tasks))
+    }
+    findIndex = (id) =>{
+        var { tasks } = this.state;
+        var result = -1
+        tasks.forEach((task, index) => {
+            if(task.id === id ){
+                result = index;
+            }
+        });
+        return result;
+    }
+
+    onDelete = (id) =>{
+        var {tasks} = this.state;
+        var index = this.findIndex(id)
+        if(index !== -1){
+            tasks.splice(index, 1);
+            this.setState({
+                tasks : tasks
+            });
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+        }
+        this.onCloseForm();
+    }
+    onUpdate = (id) => {
+        var {tasks} = this.state;
+        var index = this.findIndex(id);
+        var taskEditing = tasks[index];
+        this.setState({
+            taskEditing : taskEditing
+
+        });
+        this.onShowForm();
+       
+    } 
 
     render() {
-        var { tasks, isDisplayForm } = this.state;
-        var elmTaskForm = isDisplayForm ? <TaskForm onCloseForm={this.onCloseForm}/> : '';
+        var { tasks, isDisplayForm, taskEditing } = this.state;
+        var elmTaskForm = isDisplayForm ? <TaskForm 
+                                            onSubmit={this.onSubmit} 
+                                            onCloseForm={this.onCloseForm}
+                                            task={taskEditing}
+                                            /> : '';
+
 
         return (
-            
             <div className="container">
                 <div className="text-center">
                     <h1>List User</h1>
@@ -80,13 +107,14 @@ class Body extends Component {
                     {elmTaskForm}
                 </div>
                 <button 
-                type="button" className="btn btn-warning" 
+                type="button" className="btn btn-primary" 
                 onClick={ this.onToggleForm } style={{"marginBottom" : "15px"}}>
                 <i className="fa fa-plus-circle" style={{"marginRight" : "5px"}} ></i>Add more</button>
 
-                <button type="button" className="btn btn-info" onClick={ this.onGenerateData } style={{"marginBottom" : "15px"}}>
-                <i className="fa fa-plus-circle" style={{"marginRight" : "5px"}} ></i>Generate</button>
-                < TaskList tasks={ tasks }  />
+                < TaskList tasks={ tasks }
+                           onDelete={this.onDelete} 
+                           onUpdate={this.onUpdate}
+                           />
             </div>
         );
     }
