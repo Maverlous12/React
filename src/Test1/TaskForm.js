@@ -28,6 +28,7 @@ class TaskForm extends Component {
 
     onCloseForm = () => {
         this.props.onCloseForm();
+        this.onClear();
     }
 
     onChange = (event) => {
@@ -45,6 +46,17 @@ class TaskForm extends Component {
     onSubmit = (event) => {
         event.preventDefault();
         this.props.onSubmit(this.state);
+        this.onCloseForm();
+        this.onClear();
+    }
+
+    onClear = () => {
+        this.setState({
+            id : '',
+            name : '',
+            age : '',
+            genre : false
+        });
     }
 
 
@@ -82,7 +94,7 @@ class TaskForm extends Component {
                             </select><br/>
                             <div className='text-center'>
                                 
-                                <button type="submit" class="btn btn-primary" style={{'marginRight':'15px'}}>
+                                <button type="submit" class="btn btn-primary" style={{'marginRight':'15px'}} onClick={ this.onSubmit }>
                                     Save</button> 
                                 <button type="submit" class="btn btn-danger"onClick={ this.onCloseForm }>
                                  Cancel</button>

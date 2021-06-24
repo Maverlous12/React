@@ -24,13 +24,16 @@ class Body extends Component {
 
     onToggleForm = () => {
         this.setState({
-            isDisplayForm : !this.state.isDisplayForm 
+            isDisplayForm : !this.state.isDisplayForm ,
+            taskEditing : null
         });
+           
     }
 
     onCloseForm = () => {
         this.setState({
-            isDisplayForm : false
+            isDisplayForm : false,
+            taskEditing : null
         });
     }
 
@@ -50,7 +53,8 @@ class Body extends Component {
             tasks[index] = data;
         }
             this.setState({
-            tasks : tasks
+            tasks : tasks,
+            taskEditing : null
         });
         localStorage.setItem('tasks', JSON.stringify(tasks))
     }
